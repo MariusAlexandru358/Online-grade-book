@@ -1,0 +1,188 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "ProfesorHome";
+}
+@* @model List<List<ProfesorMaterieStudent>> *@
+@* @model List<List<CatalogOnline.Logic.NoteDTO>> *@
+@model List<CatalogOnline.Logic.NoteListDTO>
+
+<div class="container">
+
+@* 
+    <div class="container my-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Alege anul universitar:</h5>
+            </div>
+            <div class="card-body">
+                <div class="form-group mb-3">
+                    <label for="yearDropdown" class="form-label"></label>
+                    <select class="form-select" id="yearDropdown" name="selectedYear">
+                        <option value="0" selected>Selectează anul</option>
+                        @for (int i = 1; i <= Model.Anul; i++)
+                        {
+                            <option value="@i">@i (@(Model.Student.AnInscriere + @i - 1)-@(Model.Student.AnInscriere + @i))</option>
+                        }
+                    </select>
+                </div>
+                <div class="alert alert-info mt-3">
+                    <strong>Notă:</strong> Selectați anul pentru a vedea notele.
+                </div>
+            </div>
+        </div>
+    </div>
+ *@
+
+    <div class="card">
+        @*TODO Add credits, change column order: name - credit - an - sem - nota, modify js to match new order*@
+        <div class="card-body">
+            @*<h3>Note:</h3>*@
+            @{
+                int k = 0;
+            }
+            
+                <form method="post" asp-action="EditNota">
+            @foreach (var list in Model)
+            {
+                k++;
+            <details class="mb-3">
+                <summary class="bg-primary text-light d-flex justify-content-around p-2 fw-bold">
+                    @if (k == Model.Count)
+                    {
+                        <span>Restanțe</span>
+                    }
+
+                    else {
+
+                            <div class="row w-100">
+
+                                <div class="col-1">
+                                </div>
+                                <div class="col-4 text-center">
+                                    <span>@list.NoteList[0].Materie.Nume</span>
+                                </div>
+                                <div class="col-2">
+
+                                </div>
+                                <div class="col-4 text-center">
+                                    <span>Anul @list.NoteList[0].An, Semestrul @list.NoteList[0].Semestru</span>
+                                </div>
+                                <div class="col-1">
+                                </div>
+                            </div>
+                        
+                    }
+                    
+                </summary>
+
+
+                <div class="p-2">
+                    <table class="table table-hover table-bordered table-default table-head">
+                        <thead>
+                            <tr class="tabel-note-head bg-primary text-light">
+                                <th scope="col">
+                                    <button class="btn fw-bold p-0 text-light" id="sortByDenumire">Denumire disciplină <i class="fa fa-sort"></i></button>
+                                </th>
+                                <th scope="col">Student</th>
+                                <th scope="col">Anul</th>
+                                <th scope="col">Semestrul</th>
+                                <th scope="col">
+                                    <button class="btn fw-bold p-0 text-light" id="sortByNota">Nota finală <i class="fa fa-sort"></i></button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @{
+                                    int kk = 0;
+                                }
+                            @foreach (var grade in list.NoteList)
+                            {
+                                kk++;
+                                <tr data-year="@grade.An" class="tabel-note">
+                                    <td>@grade.Materie.Nume</td>
+                                    <td>@grade.Student.Nume</td>
+                                    <td>@grade.An</td>
+                                    <td>Sem. @grade.Semestru</td>
+                                    @* @if (grade.Nota != null && grade.Nota >= 5)
+                                    {
+                                        <td>@grade.Nota</td>
+                                    }
+                                    else
+                                    { *@
+                                        <td>
+                                            @* <a asp-action="AddNota" asp-route-id=@grade.Id>Adauga</a> *@
+                                                
+                                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                    <div class="form-group">
+                                                    <input type="hidden" asp-for="@Model[k-1].NoteList[kk-1].Id" class="form-control" /> @*E nevoie doar de linia asta*@
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <input type="hidden" asp-for="@Model[k-1].NoteList[kk-1].ProfesorId" class="form-control" /> @*E nevoie doar de linia asta*@
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <input type="hidden" asp-for="@Model[k-1].NoteList[kk-1].MaterieId" class="form-control" /> @*E nevoie doar de linia asta*@
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <input type="hidden" asp-for="@Model[k-1].NoteList[kk-1].StudentId" class="form-control" /> @*E nevoie doar de linia asta*@
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label asp-for="@Model[k-1].NoteList[kk-1].Nota" class="control-label">@grade.Nota</label>
+                                                    <input asp-for="@Model[k-1].NoteList[kk-1].Nota" class="form-control" min="1" max="10" />
+                                                    <span asp-validation-for="@Model[k-1].NoteList[kk-1].Nota" class="text-danger"></span>
+                                                    </div>
+                                                    @* <br /> *@
+                                                    
+                                                    <br />
+                                                
+                                        
+                                        </td>
+                                    @* } *@
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+            <br/>
+            }
+
+            <input type="submit" value="Salvează" class="btn btn-success"/>
+
+            </form>
+        </div>
+    </div>
+    @* <div class="card">
+        <div class="card-body">
+            <h3 id="average"></h3>
+        </div>
+    </div> *@
+</div>
+
+ 
+<style>
+
+    .tabel-note td {
+        text-align: center;
+    }
+
+    .tabel-note-head th {
+        text-align: center;
+    }
+</style>
+ 
+
+
+
+
+
+
+
+
+

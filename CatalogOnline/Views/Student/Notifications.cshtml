@@ -1,0 +1,35 @@
+﻿@model List<NotificareNota>
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Notifications</h2>
+        <a href="@Url.Action("Index", "Student")" class="btn btn-secondary">Înapoi</a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <ul class="list-group">
+            @foreach (var notification in Model)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <span>@notification.Message</span>
+                    </div>
+                    <span class="badge @(!notification.IsRead ? "bg-primary" : "bg-secondary")">
+                        @notification.CreatedAt.ToString("g")
+                    </span>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            No notifications available.
+        </div>
+    }
+</div>

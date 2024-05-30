@@ -1,0 +1,257 @@
+﻿@{
+    ViewData["Title"] = "StudentHome";
+    var unreadNotificationsCount = ViewBag.UnreadNotificationsCount;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-4 d-flex justify-content-around">
+            <h2>@Model.Student.Nume</h2>
+        </div>
+        <div class="col-4 d-flex">
+        </div>
+        <div class="col-4 d-flex justify-content-end">
+            <div class="notification-box">
+                @* <a href="@Url.Action("Notificare", "Student")" class="notification-link"> *@
+                <a class="notification-link"  asp-action="Notificare">
+
+                    Notificări
+                    @if (unreadNotificationsCount > 0)
+                    {
+                        <span class="badge bg-danger" id="unreadNotificationsCount">@unreadNotificationsCount</span>
+                    }
+                </a>
+            </div>
+        </div>
+ 
+    </div>
+    @* <div class="form-group mb-3">
+        <label for="yearDropdown" class="form-label">Alege anul universitar:</label>
+        <select class="form-control" id="yearDropdown" name="selectedYear">
+            
+            <option value="0" selected></option>
+            @for (int i=1; i<= Model.Anul; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </div> *@
+
+    <div class="container my-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Alege anul universitar:</h5>
+            </div>
+            <div class="card-body">
+                <div class="form-group mb-3">
+                    <label for="yearDropdown" class="form-label"></label>
+                    <select class="form-select" id="yearDropdown" name="selectedYear">
+                        <option value="0" selected>Selectează anul</option>
+                        @for (int i = 1; i <= Model.Anul; i++)
+                        {
+                            <option value="@i">@i (@(Model.Student.AnInscriere+@i-1)-@(Model.Student.AnInscriere+@i))</option>
+                        }
+                    </select>
+                </div>
+                <div class="alert alert-info mt-3">
+                    <strong>Notă:</strong> Selectați anul pentru a vedea notele.
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card"> @*TODO Add credits, change column order: name - credit - an - sem - nota, modify js to match new order*@
+        <div class="card-body">
+            @*<h3>Note:</h3>*@
+            <table class="table table-hover table-bordered table-default table-head">
+                <thead>
+                    <tr class="tabel-note-head bg-primary text-light">
+                        <th scope="col">
+                            <button class="btn fw-bold p-0 text-light" id="sortByDenumire">Denumire disciplină <i class="fa fa-sort"></i></button>
+                        </th>
+                        <th scope="col">Nr. Credite</th>
+                        <th scope="col">Anul</th>
+                        <th scope="col">Semestrul</th>
+                        <th scope="col">
+                            <button class="btn fw-bold p-0 text-light" id="sortByNota">Nota finală <i class="fa fa-sort"></i></button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var grade in Model.Note)
+                    {
+                        <tr data-year="@grade.An" class="tabel-note">
+                            <td>@grade.Materie.Nume</td>
+                            <td>@grade.Materie.Credite</td>
+                            <td>@grade.An</td>
+                            <td>Sem. @grade.Semestru</td>
+                            <td>@grade.Nota</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            @* <h3>Medie: @Model.Medie</h3> *@
+            <h3 id="average"></h3>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        @* <h2>Welcome, @User.Identity.Name</h2>
+        <p>Your enrollment details...</p> *@
+
+        <!-- Button to request a certificate -->
+        <form asp-action="RequestCertificate" method="post">
+            <button type="submit" class="btn btn-primary">Download adeverință student PDF pentru anul curent</button>
+        </form>
+    </div>
+</div>
+
+
+<style>
+    .tabel-note {
+        display: none;
+    }
+    .tabel-note td {
+        text-align: center;
+    }
+    .tabel-note-head th {
+        text-align: center;
+    }
+
+    .notification-box {
+        background-color: #f8f9fa; /* Light background for the notification box */
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .notification-link {
+        text-decoration: none;
+        color: #007bff; /* Bootstrap primary color */
+        font-weight: bold;
+    }
+
+        .notification-link:hover {
+            text-decoration: underline;
+        }
+
+    .badge {
+        margin-left: 5px;
+    }
+</style>
+@section Scripts {
+    <script>
+
+        $(function () {    
+            $('#yearDropdown').change(function () {
+                var selectedYear = $(this).val();
+                /*if (selectedYear) {
+                    $('tbody tr').hide();
+                    $('tbody tr[data-year="' + selectedYear + '"]').show();
+
+                    var sum = 0;
+                    var count = 0;
+                    $('tbody tr:visible').each(function () {
+                        var grade = parseFloat($(this).find('td:eq(1)').text());
+                        sum += grade;
+                        count++;
+                    });
+                    var average = count > 0 ? sum / count : 0;
+                    $('#average').text('Media anuala: ' + average.toFixed(2));
+                } else {
+                    $('tbody tr').hide();
+                    $('#average').hide();
+                }*/
+                if (selectedYear == 0 || selectedYear == null) {
+                    $('#average').hide();
+                    $('tbody tr').hide();
+                }
+                else {
+                    $('tbody tr').hide();
+                    $('tbody tr[data-year="' + selectedYear + '"]').show();
+                    var sum = 0;
+                    var count = 0;
+                    var restanta = false;
+                    $('tbody tr:visible').each(function () {
+                        var grade = parseFloat($(this).find('td:eq(4)').text());
+                        if (grade < 5) {
+                            $(this).addClass('text-danger');
+                            restanta = true;
+                            return;
+                        }
+                        sum += grade;
+                        count++;
+                    });
+                    $('#average').show(); 
+                    if (restanta) {
+                        $('#average').addClass('text-danger');
+                        $('#average').text('Restanță!');
+                    } else {
+                        var average = count > 0 ? 
+                                        sum / count 
+                                        : 0;
+                        $('#average').text('Media anuală: ' + average.toFixed(2));
+                        if (isNaN(average)) {
+                        //    $('#average').hide();
+                            $('#average').text('Media anuală indisponibilă');
+                        }
+                    }
+                    
+                }
+            });
+
+
+            var originalRows = $('tbody').html();
+
+
+            var sortTable = function (sortBy, order) {
+                var rows = $('tbody tr').get();
+                rows.sort(function (a, b) {
+                    var keyA = $(a).find('td:eq(' + sortBy + ')').text();
+                    var keyB = $(b).find('td:eq(' + sortBy + ')').text();
+                    var semA = $(a).find('td:eq(3)').text();
+                    var semB = $(b).find('td:eq(3)').text();
+                    if (sortBy === 4) { // Nota finala
+                        keyA = parseFloat(keyA);
+                        keyB = parseFloat(keyB);
+                    }
+                    if (order === 'asc') {
+                        return (semA < semB) ? -1 : (semA > semB) ? 1 :
+                            (keyA < keyB) ? -1 : (keyA > keyB) ? 1 : 0;
+                    } else {
+                        return (semA < semB) ? -1 : (semA > semB) ? 1 :
+                            (keyA > keyB) ? -1 : (keyA < keyB) ? 1 : 0;
+                    }
+                });
+                $.each(rows, function (index, row) {
+                    $('tbody').append(row);
+                });
+            };
+
+            ordineDenumire = 'asc';
+            ordineNota = 'desc';
+
+            $('#sortByNota').click(function () {
+                sortTable(4, ordineNota); // Sort by Nota finala (descending)
+                ordineNota = (ordineNota == 'desc') ? 'asc' : 'desc';
+            });
+            $('#sortByDenumire').click(function () {
+                sortTable(0, ordineDenumire); // Sort by Denumire disciplina (ascending)
+                ordineDenumire = (ordineDenumire == 'asc') ? 'desc' : 'asc';
+            });
+
+
+
+
+            $('#yearDropdown').val('0');
+        });
+
+        
+
+    </script>
+}
