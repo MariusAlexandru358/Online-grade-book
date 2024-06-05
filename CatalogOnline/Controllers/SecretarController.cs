@@ -263,16 +263,150 @@ namespace CatalogOnline.Controllers
         }
 
 
-        /*public IActionResult NotifyProf()
+        public IActionResult NotifyProf()
         {
             if (!CredentialsIsValid())
             {
                 return RedirectToAction("Privacy", "Home");
             }
-            var professors = _catalogOnlineContext.Materie.ToList();
-            return View("IndexMaterie", professors);
+            var professors = _catalogOnlineContext.Profesor.ToList();
+            ViewBag.CatedraList = professors.Select(p => p.Catedra).Distinct().ToList();
+            ViewBag.ProfesorList = professors;
+            return View("NotifyProf", null);
+        }
+
+
+        // GET: Secretary/SendMessage
+        public IActionResult SendMessage()
+        {
+            if (!CredentialsIsValid())
+            {
+                return RedirectToAction("Privacy", "Home");
+            }
+            var professors = _catalogOnlineContext.Profesor.ToList();
+            var groups = new List<string> { "Matematica", "Programare", "Fizica" };
+
+            var model = new SendMessageViewModel
+            {
+                CatedraList = groups,
+                ProfesorList = professors
+            };
+            //var professors = _catalogOnlineContext.Profesor.ToList();
+            ViewBag.CatedraList = professors.Select(p => p.Catedra).Distinct().ToList();
+            ViewBag.ProfesorList = professors;
+            return View("NotifyProf",model);
+        }
+
+        /*// POST: Secretary/SendMessage
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(SendMessageViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get all professors from the selected groups
+                var professorsInGroups = new List<Profesor>();
+                if (model.CatedraList != null && model.CatedraList.Count > 0)
+                {
+                    professorsInGroups = _catalogOnlineContext.Profesor
+                                                .Where(p => model.CatedraList.Contains(p.Catedra))
+                                                .ToList();
+                }
+
+                // Combine the selected professors and professors from the selected groups
+                var selectedProfessors = _catalogOnlineContext.Profesor
+                                                 .Where(p => model.ProfesorIdList.Contains(p.Id))
+                                                 .Union(professorsInGroups)
+                                                 .ToList();
+
+                // Send messages to all selected professors
+                foreach (var professor in selectedProfessors)
+                {
+                    var message = new MesajProfesor
+                    {
+                        Message = model.Mesaj,
+                        CreatedAt = DateTime.Now,
+                        ProfesorId = professor.Id,
+                        IsRead = false,
+                        Profesor = professor
+                        //SecretarId = model.SecretarId // Assuming you have the SecretaryId available
+                    };
+
+                    _catalogOnlineContext.MesajProfesor.Add(message);
+                }
+
+                await _catalogOnlineContext.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Mesajul a fost trimis cu succes.";
+                return RedirectToAction("SendMessage");
+            }
+
+            // Reload the groups and professors list in case of validation error
+            model.CatedraList = new List<string> { "Matematica", "Programare", "Fizica" };
+            model.ProfesorList = _catalogOnlineContext.Profesor.ToList();
+            var professors = _catalogOnlineContext.Profesor.ToList();
+            ViewBag.CatedraList = professors.Select(p => p.Catedra).ToList();
+            ViewBag.ProfesorList = professors;
+            return View(model);
         }*/
 
+        // POST: Secretary/SendMessage
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(SendMessageViewModel model)
+        {
+            if (!CredentialsIsValid())
+            {
+                return RedirectToAction("Privacy", "Home");
+            }
+            if (ModelState.IsValid)
+            {
+                // Get all professors from the selected groups
+                List<Profesor> professorsInGroups = new List<Profesor>();
+                if (model.CatedraList != null && model.CatedraList.Count > 0)
+                {
+                    professorsInGroups = _catalogOnlineContext.Profesor
+                                                .Where(p => model.CatedraList.Contains(p.Catedra))
+                                                .ToList();
+                }
+
+                // Get the selected professors
+                List<Profesor> selectedProfessors = new List<Profesor>();
+                if (model.ProfesorIdList != null && model.ProfesorIdList.Count > 0)
+                {
+                    selectedProfessors = _catalogOnlineContext.Profesor
+                                                 .Where(p => model.ProfesorIdList.Contains(p.Id))
+                                                 .ToList();
+                }
+
+                // Combine the selected professors and professors from the selected groups
+                var combinedProfessors = selectedProfessors.Union(professorsInGroups).Distinct().ToList();
+
+                // Send messages to all selected professors
+                foreach (var professor in combinedProfessors)
+                {
+                    var message = new MesajProfesor
+                    {
+                        Message = model.Mesaj,
+                        CreatedAt = DateTime.Now,
+                        ProfesorId = professor.Id,
+                        IsRead = false,
+                        Profesor = professor
+                        //SecretarId = model.SecretarId // Assuming you have the SecretaryId available
+                    };
+
+                    _catalogOnlineContext.MesajProfesor.Add(message);
+                }
+
+                await _catalogOnlineContext.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Mesajul a fost trimis cu succes.";
+                return RedirectToAction("SendMessage");
+            }
+
+            // Reload the groups and professors list in case of validation error
+            model.CatedraList = new List<string> { "Matematica", "Programare", "Fizica" };
+            model.ProfesorList = _catalogOnlineContext.Profesor.Distinct().ToList();
+            return View("NotifyProf",model);
+        }
 
     }
 }

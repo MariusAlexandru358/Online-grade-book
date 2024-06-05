@@ -14,6 +14,7 @@ namespace CatalogOnline.ContextModels
         public DbSet<NotificareNota> NotificareNota { get; set; }
         public DbSet<Secretar> Secretar { get; set; }
         public DbSet<Administrator> Adminstrator { get; set; }
+        public DbSet<MesajProfesor> MesajProfesor {  get; set; }
         public CatalogOnlineContext(DbContextOptions<CatalogOnlineContext> options) : base(options)
         {
             

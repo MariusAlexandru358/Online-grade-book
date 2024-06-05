@@ -41,6 +41,7 @@ namespace CatalogOnline.Controllers
                 return RedirectToAction("Privacy", "Home");
             }
             var loggedInProfEmail = User.FindFirstValue(ClaimTypes.Email);
+            var profesor = _catalogOnlineContext.Profesor.FirstOrDefault(p => p.Email.ToLower() == loggedInProfEmail.ToLower());
 
             var query = _catalogOnlineContext.ProfesorMaterieStudent
                 .Include(g => g.Profesor)
@@ -247,6 +248,11 @@ namespace CatalogOnline.Controllers
 
             grupPredare.Add(new NoteListDTO { NoteList = grupRestante });
 
+            var unreadNotificationsCount = _catalogOnlineContext.MesajProfesor
+                .Count(n => n.ProfesorId == profesor.Id && !n.IsRead);
+
+            ViewBag.UnreadNotificationsCount = unreadNotificationsCount;
+
             return View("Index", grupPredare);
 
 
@@ -306,5 +312,44 @@ namespace CatalogOnline.Controllers
             // Redirect to the index page or wherever appropriate
             return RedirectToAction("Index");
         }
+
+
+
+        public IActionResult Notificare()
+        {
+            var loggedInEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (!CredentialsIsValid())
+            {
+                return RedirectToAction("Privacy", "Home");
+            }
+            var profesor = _catalogOnlineContext.Profesor.FirstOrDefault(s => s.Email.ToLower() == loggedInEmail.ToLower());
+
+
+            var notifications = _catalogOnlineContext.MesajProfesor
+                .Where(n => n.ProfesorId == profesor.Id)
+                .OrderByDescending(n => n.CreatedAt)
+                .ToList();
+
+            var notificationsDisplay = notifications.Select(n => new MesajProfesor
+            {
+                Id = n.Id,
+                ProfesorId = n.ProfesorId,
+                Message = n.Message,
+                CreatedAt = n.CreatedAt,
+                IsRead = n.IsRead
+            }).ToList();
+
+            var unreadNotifications = notifications.Where(n => !n.IsRead).ToList();
+
+            foreach (var n in unreadNotifications)
+            {
+                n.IsRead = true;
+                _catalogOnlineContext.MesajProfesor.Update(n);
+            }
+            _catalogOnlineContext.SaveChanges();
+            return View("Notifications", notificationsDisplay);
+        }
+
+
     }
 }

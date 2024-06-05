@@ -70,12 +70,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmVzb3JcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Profesor/Notifications.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmVzb3JcTm90aWZpY2F0aW9ucy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Secretar/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VjcmV0YXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Secretar/IndexAn.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VjcmV0YXJcSW5kZXhBbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Secretar/NotifyProf.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VjcmV0YXJcTm90aWZ5UHJvZi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Shared/Error.cshtml]

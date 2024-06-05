@@ -3,6 +3,7 @@
 *@
 @{
     ViewData["Title"] = "ProfesorHome";
+    var unreadNotificationsCount = ViewBag.UnreadNotificationsCount;
 }
 @* @model List<List<ProfesorMaterieStudent>> *@
 @* @model List<List<CatalogOnline.Logic.NoteDTO>> *@
@@ -34,6 +35,21 @@
         </div>
     </div>
  *@
+
+
+    <div class="col-12 d-flex justify-content-end">
+        <div class="notification-box">
+            @* <a href="@Url.Action("Notificare", "Student")" class="notification-link"> *@
+            <a class="notification-link" asp-action="Notificare">
+
+                Notificări
+                @if (unreadNotificationsCount > 0)
+                {
+                    <span class="badge bg-danger" id="unreadNotificationsCount">@unreadNotificationsCount</span>
+                }
+            </a>
+        </div>
+    </div>
 
     <div class="card">
         @*TODO Add credits, change column order: name - credit - an - sem - nota, modify js to match new order*@
@@ -175,11 +191,33 @@
     .tabel-note-head th {
         text-align: center;
     }
+
+    .notification-box {
+        background-color: #f8f9fa; /* Light background for the notification box */
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .notification-link {
+        text-decoration: none;
+        color: #007bff; /* Bootstrap primary color */
+        font-weight: bold;
+    }
+
+        .notification-link:hover {
+            text-decoration: underline;
+        }
+
+    .badge {
+        margin-left: 5px;
+    }
 </style>
  
 
 
+<script>
 
+</script>
 
 
 
