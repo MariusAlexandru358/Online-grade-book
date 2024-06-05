@@ -1,0 +1,24 @@
+﻿@model CatalogOnline.Models.Materie
+
+@{
+    ViewData["Title"] = "Editează Materie";
+}
+
+<div class="container mt-4">
+    <h2>Editează Materie</h2>
+    <form asp-action="Edit">
+        <div class="form-group">
+            <label asp-for="Nume" class="control-label"></label>
+            <input asp-for="Nume" class="form-control" />
+            <span asp-validation-for="Nume" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Credite" class="control-label"></label>
+            <input asp-for="Credite" class="form-control" />
+            <span asp-validation-for="Credite" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Salvează" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

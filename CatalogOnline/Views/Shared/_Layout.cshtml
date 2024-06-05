@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var roleClaim = User.Claims.FirstOrDefault(c => c.Type == "Rol")?.Value;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,10 +26,44 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        </li> *@
+                    
+                    @if (roleClaim != null)
+                    {
+                        switch (roleClaim)
+                        {
+                            case "Student":
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">StudentDashboard</a>
+                                </li>
+                                break;
+                            case "Profesor":
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Profesor" asp-action="Index">ProfesorDashboard</a>
+                                </li>
+                                break;
+                            case "Secretar":
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Secretar" asp-action="Index">SecretarDashboard</a>
+                                </li>
+                                break;
+                            case "Adminstrator":
+                                <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" asp-area="" asp-controller="Administrator" asp-action="Index" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        AdministratorDashboard
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                                        <a class="dropdown-item" asp-controller="Administrator" asp-action="IndexMaterie">Management materii</a>
+                                        <a class="dropdown-item" asp-controller="Administrator" asp-action="IndexCurs">Management cursuri</a>
+                                    </div>
+                                </li>
+                                break;
+                        }
+                    }
                     </ul>
+
                     <ul class="navbar-nav flex-grow-1 align-items-end">
                         @if (User?.Identity?.IsAuthenticated == true)
                         {

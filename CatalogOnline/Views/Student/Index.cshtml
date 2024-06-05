@@ -107,7 +107,7 @@
 
         <!-- Button to request a certificate -->
         <form asp-action="RequestCertificate" method="post">
-            <button type="submit" class="btn btn-primary">Download adeverință student PDF pentru anul curent</button>
+            <button type="submit" class="btn btn-primary">Download adeverință student (PDF) pentru anul curent</button>
         </form>
     </div>
 </div>
@@ -146,27 +146,9 @@
 </style>
 @section Scripts {
     <script>
-
-        $(function () {    
+        $(function () {
             $('#yearDropdown').change(function () {
                 var selectedYear = $(this).val();
-                /*if (selectedYear) {
-                    $('tbody tr').hide();
-                    $('tbody tr[data-year="' + selectedYear + '"]').show();
-
-                    var sum = 0;
-                    var count = 0;
-                    $('tbody tr:visible').each(function () {
-                        var grade = parseFloat($(this).find('td:eq(1)').text());
-                        sum += grade;
-                        count++;
-                    });
-                    var average = count > 0 ? sum / count : 0;
-                    $('#average').text('Media anuala: ' + average.toFixed(2));
-                } else {
-                    $('tbody tr').hide();
-                    $('#average').hide();
-                }*/
                 if (selectedYear == 0 || selectedYear == null) {
                     $('#average').hide();
                     $('tbody tr').hide();
@@ -174,40 +156,37 @@
                 else {
                     $('tbody tr').hide();
                     $('tbody tr[data-year="' + selectedYear + '"]').show();
-                    var sum = 0;
-                    var count = 0;
+                    var totalWeightedSum = 0;
+                    var totalCredits = 0;
                     var restanta = false;
+
                     $('tbody tr:visible').each(function () {
                         var grade = parseFloat($(this).find('td:eq(4)').text());
+                        var credits = parseFloat($(this).find('td:eq(1)').text());
                         if (grade < 5) {
                             $(this).addClass('text-danger');
                             restanta = true;
                             return;
                         }
-                        sum += grade;
-                        count++;
+                        totalWeightedSum += grade * credits;
+                        totalCredits += credits;
                     });
-                    $('#average').show(); 
+
+                    $('#average').show();
                     if (restanta) {
                         $('#average').addClass('text-danger');
                         $('#average').text('Restanță!');
                     } else {
-                        var average = count > 0 ? 
-                                        sum / count 
-                                        : 0;
-                        $('#average').text('Media anuală: ' + average.toFixed(2));
-                        if (isNaN(average)) {
-                        //    $('#average').hide();
+                        var weightedAverage = totalCredits > 0 ? totalWeightedSum / totalCredits : 0;
+                        $('#average').text('Media anuală: ' + weightedAverage.toFixed(2));
+                        if (isNaN(weightedAverage)) {
                             $('#average').text('Media anuală indisponibilă');
                         }
                     }
-                    
                 }
             });
 
-
             var originalRows = $('tbody').html();
-
 
             var sortTable = function (sortBy, order) {
                 var rows = $('tbody tr').get();
@@ -233,25 +212,21 @@
                 });
             };
 
-            ordineDenumire = 'asc';
-            ordineNota = 'desc';
+            var ordineDenumire = 'asc';
+            var ordineNota = 'desc';
 
             $('#sortByNota').click(function () {
-                sortTable(4, ordineNota); // Sort by Nota finala (descending)
+                sortTable(4, ordineNota); // Sort by Nota finala
                 ordineNota = (ordineNota == 'desc') ? 'asc' : 'desc';
             });
+
             $('#sortByDenumire').click(function () {
-                sortTable(0, ordineDenumire); // Sort by Denumire disciplina (ascending)
+                sortTable(0, ordineDenumire); // Sort by Denumire disciplina
                 ordineDenumire = (ordineDenumire == 'asc') ? 'desc' : 'asc';
             });
 
-
-
-
             $('#yearDropdown').val('0');
         });
-
-        
-
     </script>
+
 }

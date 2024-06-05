@@ -1,0 +1,54 @@
+﻿@model List<int>
+
+@{
+    ViewData["Title"] = "Secretary Dashboard";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Vizualizează cataloage:</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" asp-action="SelectYearAndSubject" asp-controller="Secretar">
+                <div class="form-group mb-3">
+                    <label for="yearDropdown" class="form-label">An universitar</label>
+                    <select class="form-select" id="yearDropdown" name="selectedYear">
+                        <option value="0" selected>Selectează anul</option>
+                        @foreach (var year in Model)
+                        {
+                            <option value="@year">@(year-1) - @(year)</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="subjectSearch" class="form-label">Materie</label>
+                    <input type="text" class="form-control" id="subjectSearch" name="subjectSearch" placeholder="Caută materia" list="subjectList" />
+                    <datalist id="subjectList">
+                        @foreach (var subject in ViewBag.Materie)
+                        {
+                            <option value="@subject.Nume"></option>
+                        }
+                    </datalist>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="professorSearch" class="form-label">Profesor</label>
+                    <input type="text" class="form-control" id="professorSearch" name="professorSearch" placeholder="Caută profesorul" list="professorList" />
+                    <datalist id="professorList">
+                        @foreach (var professor in ViewBag.Profesor)
+                        {
+                            <option value="@professor.Nume"></option>
+                        }
+                    </datalist>
+                </div>
+                <button type="submit" class="btn btn-primary">Selectează</button>
+            </form>
+        </div>
+    </div>
+    @* <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Trimite înștiințări către profesori</h5>
+            <a asp-action="NotifyProf" class="btn btn-primary mb-2">Trimite înștiințări către profesori</a>
+        </div>
+    </div> *@
+</div>

@@ -1,0 +1,19 @@
+﻿@model List<CatalogOnline.Models.Materie>
+
+@{
+    ViewData["Title"] = "Administrator Dashboard";
+}
+
+<div class="container mt-4">
+    <ul>
+        <li>
+            <a asp-action="IndexMaterie" class="btn btn-primary mb-2">Management materii</a>
+        </li>
+        <li>
+            <a asp-action="IndexCurs" class="btn btn-primary mb-2">Management cursuri</a>
+        </li>
+        @* <li>
+            <a asp-action="IndexProf" class="btn btn-primary mb-2">Management cursuri și profesori</a>
+        </li> *@
+    </ul>
+</div>

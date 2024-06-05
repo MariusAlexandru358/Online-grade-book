@@ -1,0 +1,84 @@
+﻿@* @model CatalogOnline.Logic.AddRemoveStudentViewModel*@
+@model List<Student>
+
+@{
+    ViewData["Title"] = "ConfigureazăCurs";
+}
+
+<div class="container mt-4">
+    <h2>Configurează un curs nou cu studenți</h2>
+    @* <h4>Curs: @Model.Materie.Nume</h4>
+    <h4>Profesor: @Model.Profesor.Nume</h4>
+    <h4>Anul @Model.An Semestrul @Model.Semestru</h4> *@
+    <form asp-action="ConstructCurs" method="post">
+        <label for="an" class="form-label">Anul</label>
+        <input type="number" id="an" name="an" max="4" min="1" />
+        <label for="sem" class="form-label">Semestrul</label>
+        <input type="number" id="sem" name="sem" max="2" min="1" />
+        @* <input type="hidden" name="materieId" value="@Model.MaterieId" />
+        <input type="hidden" name="profesorId" value="@Model.ProfesorId" /> *@
+        <br>
+        <label for="materieId" class="form-label">Materie</label>
+        <input type="text" class="form-control" id="materieId" name="materieName" placeholder="Alege materia" list="materieList" />
+        <datalist id="materieList">
+            @foreach (var subject in ViewBag.Materie)
+            {
+                <option value="@subject.Nume"></option>
+            }
+        </datalist>
+        <br>
+        <label for="profesorId" class="form-label">Profesor</label>
+        <input type="text" class="form-control" id="profesorId" name="profesorName" placeholder="Alege profesorul" list="profesorList" />
+        <datalist id="profesorList">
+            @foreach (var professor in ViewBag.Profesor)
+            {
+                <option value="@professor.Nume"></option>
+            }
+        </datalist>
+        <br>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            if (ViewData.ModelState[string.Empty] != null)
+            {
+                <div class="error-summary">
+                    @foreach (var error in ViewData.ModelState[string.Empty].Errors)
+                    {
+                        <div class="error-item text-danger">
+                            @error.ErrorMessage
+                        </div>
+                    }
+                </div>
+            }
+        }
+
+        <div class="form-group">
+            <label for="studentList">Selectează studenți:</label>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Student</th>
+                        <th>An Înscriere</th>
+                        <th>Seria + Grupa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="selectedStudents" value="@student.Id" />
+                            </td>
+                            <td>@student.Nume</td>
+                            <td>@student.AnInscriere</td>
+                            <td>@student.Seria@student.Grupa</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Confirmă cursul nou cu studenții selectați</button>
+    </form>
+</div>

@@ -38,20 +38,30 @@ namespace CatalogOnline.Controllers
             avg = avg / nr;
             return avg;
         }
+        bool CredentialsIsValid()
+        {
+            var loggedInEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (loggedInEmail == null)
+            {
+                return false;
+            }
 
+            var user = _catalogOnlineContext.Student.FirstOrDefault(p => p.Email.ToLower() == loggedInEmail.ToLower());
+            if (user == default || user == null)
+            {
+                return false;
+            }
+            return true;
+        }
         public IActionResult Index(int? selectedYear)
         {
             var loggedInStudentEmail = User.FindFirstValue(ClaimTypes.Email);
-            if (loggedInStudentEmail == null)
+            if (!CredentialsIsValid())
             {
                 return RedirectToAction("Privacy", "Home");
             }
+            var student = _catalogOnlineContext.Student.FirstOrDefault(p => p.Email.ToLower() == loggedInStudentEmail.ToLower());
 
-            var student = _catalogOnlineContext.Student.FirstOrDefault(s => s.Email.ToLower() == loggedInStudentEmail.ToLower());
-            if (student == default || student == null)
-            {
-                return RedirectToAction("Privacy", "Home");
-            }
             /*var note = _catalogOnlineContext.Nota.Include(g => g.ProfesorMaterieStudent).ThenInclude(s => s.Student)
                 .Include(g => g.ProfesorMaterieStudent).ThenInclude(c => c.Materie)
                 .Where(g => g.ProfesorMaterieStudent.Student.Email.ToLower() == loggedInStudentEmail.ToLower()).ToList();
@@ -128,16 +138,12 @@ namespace CatalogOnline.Controllers
         public IActionResult Notificare()
         {
             var loggedInStudentEmail = User.FindFirstValue(ClaimTypes.Email);
-            if (loggedInStudentEmail == null)
+            if (!CredentialsIsValid())
             {
                 return RedirectToAction("Privacy", "Home");
             }
-
             var student = _catalogOnlineContext.Student.FirstOrDefault(s => s.Email.ToLower() == loggedInStudentEmail.ToLower());
-            if (student == null)
-            {
-                return RedirectToAction("Privacy", "Home");
-            }
+            
 
             var notifications = _catalogOnlineContext.NotificareNota
                 .Where(n => n.StudentId == student.Id)
@@ -168,12 +174,16 @@ namespace CatalogOnline.Controllers
         [HttpPost]
         public async Task<IActionResult> RequestCertificate()
         {
+            if (!CredentialsIsValid())
+            {
+                return RedirectToAction("Privacy", "Home");
+            }
             var studentEmail = User.FindFirstValue(ClaimTypes.Email);
             var student = await _catalogOnlineContext.Student.FirstOrDefaultAsync(s => s.Email == studentEmail);
 
             if (student == null || !IsEnrolledInCurrentYear(student))
             {
-                return BadRequest("You are not enrolled in a program for the current year.");
+                return BadRequest("A apărut o eroare neprevăzută. Vă rugăm încercați din nou mai târziu.");
             }
 
             var pdf = GenerateCertificatePdf(student);
@@ -220,7 +230,7 @@ namespace CatalogOnline.Controllers
                 document.Add(new Paragraph("Facultatea de Matematica și Informatică, Universitatea din București")
                     .SetFont(font).SetFontSize(12)
                     .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT));
-                document.Add(new Paragraph($"Data: {DateTime.Now.ToString("dd MM yyyy")}")
+                document.Add(new Paragraph($"Data: {DateTime.Now.ToString("dd.MM.yyyy")}")
                     .SetFont(font).SetFontSize(12)
                     .SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT));
                 document.Add(new Paragraph("ștampilă și semnătură:")

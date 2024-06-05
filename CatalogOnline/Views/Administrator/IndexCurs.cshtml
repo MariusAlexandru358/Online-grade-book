@@ -1,0 +1,120 @@
+﻿@model List<CatalogOnline.Logic.NoteListDTO>
+
+@{
+    ViewData["Title"] = "Administrator Dashboard";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sidebar for navigation -->
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Filtrare după an</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <select id="yearFilter" class="form-select" onchange="filterByYear()">
+                            <option value="">Toți anii</option>
+                            @foreach (var year in Model.SelectMany(m => m.NoteList).Select(n => n.An).Distinct().OrderBy(y => y))
+                            {
+                                <option value="@year">Anul @year</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Filtrare după profesor</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <select id="professorFilter" class="form-select" onchange="filterByProfessor()">
+                            <option value="">Toți profesorii</option>
+                            @foreach (var prof in Model.SelectMany(m => m.NoteList).Select(n => n.Profesor.Nume).Distinct().OrderBy(p => p))
+                            {
+                                <option value="@prof">@prof</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between mt-3">
+                <a asp-action="ConstructCurs" class="btn btn-success btn-sm">Configurează un curs nou</a>
+            </div>
+            <hr />
+        </div>
+        <!-- Main content area -->
+        <div class="col-md-9">
+            <div id="gradebookContainer">
+                @foreach (var group in Model)
+                {
+                    var firstNote = group.NoteList.FirstOrDefault();
+                    if (firstNote != null)
+                    {
+                        <div class="card mb-4 gradebook" data-year="@firstNote.An" data-professor="@firstNote.Profesor.Nume">
+                            <div class="card-header">
+                                Anul universitar @(firstNote.Student.AnInscriere + firstNote.An - 1)-@(firstNote.Student.AnInscriere + firstNote.An) <br />
+                                Disciplina @firstNote.Materie.Nume, Profesor @firstNote.Profesor.Nume <br />
+                                Anul @firstNote.An Semestrul @firstNote.Semestru <br />
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Student</th>
+                                            <th>Nota</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var note in group.NoteList)
+                                        {
+                                            <tr>
+                                                <td>@note.Student.Nume</td>
+                                                <td>@note.Nota</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-between mt-3">
+                                    <a asp-action="AddStudent" asp-route-catalogId="@firstNote.Id" class="btn btn-success btn-sm">Add Student</a>
+                                    <a asp-action="RemoveStudent" asp-route-catalogId="@firstNote.Id" class="btn btn-danger btn-sm">Remove Student</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterByYear() {
+            var year = document.getElementById('yearFilter').value;
+            var gradebooks = document.getElementsByClassName('gradebook');
+            for (var i = 0; i < gradebooks.length; i++) {
+                if (year === "" || gradebooks[i].getAttribute('data-year') === year) {
+                    gradebooks[i].style.display = "";
+                } else {
+                    gradebooks[i].style.display = "none";
+                }
+            }
+        }
+
+        function filterByProfessor() {
+            var professor = document.getElementById('professorFilter').value;
+            var gradebooks = document.getElementsByClassName('gradebook');
+            for (var i = 0; i < gradebooks.length; i++) {
+                if (professor === "" || gradebooks[i].getAttribute('data-professor') === professor) {
+                    gradebooks[i].style.display = "";
+                } else {
+                    gradebooks[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+}

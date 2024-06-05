@@ -1,0 +1,46 @@
+﻿@model CatalogOnline.Logic.AddRemoveStudentViewModel
+
+@{
+    ViewData["Title"] = "AdaugăStudențiLaCurs";
+}
+
+<div class="container mt-4">
+    <h2>Adaugă studenți la curs</h2>
+    <h4>Curs: @Model.Materie.Nume</h4>
+    <h4>Profesor: @Model.Profesor.Nume</h4>
+    <h4>Anul @Model.An Semestrul @Model.Semestru</h4>
+    <form asp-action="AddStudent" method="post">
+        <input type="hidden" name="an" value="@Model.An" />
+        <input type="hidden" name="sem" value="@Model.Semestru" />
+        <input type="hidden" name="materieId" value="@Model.MaterieId" />
+        <input type="hidden" name="profesorId" value="@Model.ProfesorId" />
+        <div class="form-group">
+            <label for="studentList">Selectează studenți:</label>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Student</th>
+                        <th>An Înscriere</th>
+                        <th>Seria + Grupa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.StudentList)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="selectedStudents" value="@student.Id" />
+                            </td>
+                            <td>@student.Nume</td>
+                            <td>@student.AnInscriere</td>
+                            <td>@student.Seria@student.Grupa</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Selected Students</button>
+    </form>
+</div>

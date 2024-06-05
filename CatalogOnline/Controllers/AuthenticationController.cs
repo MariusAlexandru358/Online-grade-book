@@ -64,6 +64,30 @@ namespace CatalogOnline.Controllers
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));
                         return RedirectToAction("Index", "Profesor");
                     }
+                    else if (_context.Secretar.Where(user => user.Email.ToLower() == model.Email.ToLower()
+                                                        && user.Password == model.Password).Any())
+                    {
+                        List<Claim> claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Email, model.Email),
+                            new Claim("Rol", "Secretar")
+                        };
+                        var claimIdentity = new ClaimsIdentity(claims, "AuthenticationCookie");
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));
+                        return RedirectToAction("Index", "Secretar");
+                    }
+                    else if (_context.Adminstrator.Where(user => user.Email.ToLower() == model.Email.ToLower()
+                                                        && user.Password == model.Password).Any())
+                    {
+                        List<Claim> claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Email, model.Email),
+                            new Claim("Rol", "Adminstrator")
+                        };
+                        var claimIdentity = new ClaimsIdentity(claims, "AuthenticationCookie");
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));
+                        return RedirectToAction("Index", "Administrator");
+                    }
                     else
                     {
                         ModelState.AddModelError(string.Empty, "Email sau parolă greșite");

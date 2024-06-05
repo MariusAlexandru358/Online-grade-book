@@ -18,6 +18,42 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\_UniBuc\_3\_PAW_BackendWebC#\Online-grade-book\CatalogOnline
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Administrator/AddStudent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvclxBZGRTdHVkZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Administrator/ConstructCurs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvclxDb25zdHJ1Y3RDdXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Administrator/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvclxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Administrator/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvclxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Administrator/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvclxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Administrator/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Administrator/IndexCurs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvclxJbmRleEN1cnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Administrator/IndexMaterie.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvclxJbmRleE1hdGVyaWUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Administrator/RemoveStudent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvclxSZW1vdmVTdHVkZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Authentication/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aGVudGljYXRpb25cTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -32,6 +68,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Profesor/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmVzb3JcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Secretar/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VjcmV0YXJcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Secretar/IndexAn.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VjcmV0YXJcSW5kZXhBbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/_UniBuc/_3/_PAW_BackendWebC\#/Online-grade-book/CatalogOnline/Views/Shared/Error.cshtml]

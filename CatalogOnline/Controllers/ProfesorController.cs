@@ -18,19 +18,29 @@ namespace CatalogOnline.Controllers
         {
             _catalogOnlineContext = catalogOnlineContext;
         }
-        public IActionResult Index()
+        bool CredentialsIsValid()
         {
-            var loggedInProfEmail = User.FindFirstValue(ClaimTypes.Email);
-            if (loggedInProfEmail == null)
+            var loggedInEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (loggedInEmail == null)
             {
-                return RedirectToAction("Privacy", "Home");
+                return false;
             }
 
-            var profesor = _catalogOnlineContext.Profesor.FirstOrDefault(p => p.Email.ToLower() == loggedInProfEmail.ToLower());
-            if (profesor == default || profesor == null)
+            var user = _catalogOnlineContext.Profesor.FirstOrDefault(p => p.Email.ToLower() == loggedInEmail.ToLower());
+            if (user == default || user == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public IActionResult Index()
+        {
+            if (!CredentialsIsValid())
             {
                 return RedirectToAction("Privacy", "Home");
             }
+            var loggedInProfEmail = User.FindFirstValue(ClaimTypes.Email);
 
             var query = _catalogOnlineContext.ProfesorMaterieStudent
                 .Include(g => g.Profesor)
@@ -244,6 +254,10 @@ namespace CatalogOnline.Controllers
 
         public IActionResult AddNota(int id)
         {
+            if (!CredentialsIsValid())
+            {
+                return RedirectToAction("Privacy", "Home");
+            }
             //ViewBag.Categories = _newsContext.Category.Select(cat => new SelectListItem { Value = cat.Id.ToString(), Text = cat.Name }).ToList();
             //var nw = _newsContext.News.Include(nw => nw.Category).FirstOrDefault(nw => nw.Id == id);
             return View("AddNota", null);
@@ -251,6 +265,10 @@ namespace CatalogOnline.Controllers
 
         public IActionResult EditNota(List<NoteListDTO> noteList)
         {
+            if (!CredentialsIsValid())
+            {
+                return RedirectToAction("Privacy", "Home");
+            }
             foreach (var list in noteList)
             {
 //                var nota = list;
@@ -283,9 +301,6 @@ namespace CatalogOnline.Controllers
                 }
                 
             }
-            
-            
-
             
 
             // Redirect to the index page or wherever appropriate
