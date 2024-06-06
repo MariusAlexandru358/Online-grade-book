@@ -1,5 +1,4 @@
-﻿@* @model CatalogOnline.Logic.AddRemoveStudentViewModel*@
-@model List<Student>
+﻿@model List<Student>
 
 @{
     ViewData["Title"] = "ConfigureazăCurs";
@@ -7,16 +6,11 @@
 
 <div class="container mt-4">
     <h2>Configurează un curs nou cu studenți</h2>
-    @* <h4>Curs: @Model.Materie.Nume</h4>
-    <h4>Profesor: @Model.Profesor.Nume</h4>
-    <h4>Anul @Model.An Semestrul @Model.Semestru</h4> *@
     <form asp-action="ConstructCurs" method="post">
         <label for="an" class="form-label">Anul</label>
         <input type="number" id="an" name="an" max="4" min="1" />
         <label for="sem" class="form-label">Semestrul</label>
         <input type="number" id="sem" name="sem" max="2" min="1" />
-        @* <input type="hidden" name="materieId" value="@Model.MaterieId" />
-        <input type="hidden" name="profesorId" value="@Model.ProfesorId" /> *@
         <br>
         <label for="materieId" class="form-label">Materie</label>
         <input type="text" class="form-control" id="materieId" name="materieName" placeholder="Alege materia" list="materieList" />

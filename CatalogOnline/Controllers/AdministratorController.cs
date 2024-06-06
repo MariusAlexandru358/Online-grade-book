@@ -197,31 +197,6 @@ namespace CatalogOnline.Controllers
             var currentYear = DateTime.Now.Year;
             var currentMonth = DateTime.Now.Month;
 
-            /*if (year1 == null)
-            {
-                if (currentMonth > 8)
-                {
-                    year1 = currentYear;
-                    year2 = currentYear + 1;
-                }
-                else
-                {
-                    year1 = currentYear - 1;
-                    year2 = currentYear;
-                }
-            }
-            if (subjectId != null)
-            {
-                query = query.Where(g => g.MaterieId == subjectId.Value).ToList();
-            }
-            if (profesorId != null)
-            {
-                query = query.Where(g => g.MaterieId == subjectId.Value).ToList();
-            }
-            if (year1 != 0)
-            {
-                query = query.Where(g => g.Student.AnInscriere + g.An - (DateTime.Now.Month > 8 ? 1 : 0) == year1).ToList();
-            }*/
             var grupPredare = query
                 .GroupBy(g => new
                 {
@@ -257,7 +232,7 @@ namespace CatalogOnline.Controllers
 
 
 
-        // GET: Administrator/AddStudentToCourse
+        // GET: Administrator/AddStudent
         public IActionResult AddStudent(int catalogId)
         {
             if (!CredentialsIsValid())
@@ -328,7 +303,7 @@ namespace CatalogOnline.Controllers
             return RedirectToAction("IndexCurs");
         }
 
-        // GET: Administrator/RemoveStudentFromCourse
+        // GET: Administrator/RemoveStudent
         public IActionResult RemoveStudent(int catalogId)
         {
             if (!CredentialsIsValid())
@@ -358,7 +333,7 @@ namespace CatalogOnline.Controllers
             return View(model);
         }
 
-        // POST: Administrator/RemoveStudentFromCourse
+        // POST: Administrator/RemoveStudent
         [HttpPost]
         public IActionResult RemoveStudent(int an, int sem, int materieId, int profesorId, int[] selectedStudents)
         {
@@ -392,25 +367,7 @@ namespace CatalogOnline.Controllers
             ViewBag.Materie = _catalogOnlineContext.Materie.ToList();
             ViewBag.Profesor = _catalogOnlineContext.Profesor.ToList();
 
-            /*var reff = _catalogOnlineContext.ProfesorMaterieStudent
-                .Include(g => g.Materie)
-                .Include(g => g.Profesor)
-                .FirstOrDefault(g => g.Id == catalogId);
-            var reffList = _catalogOnlineContext.ProfesorMaterieStudent
-                .Include(g => g.Student)
-                .Where(g => g.An == reff.An && g.MaterieId == reff.MaterieId)
-                .ToList();*/
             var studentList = _catalogOnlineContext.Student.OrderBy(g => g.AnInscriere).ToList();
-            /*var model = new AddRemoveStudentViewModel
-            {
-                An = reff.An,
-                Semestru = reff.Semestru,
-                MaterieId = reff.MaterieId,
-                ProfesorId = reff.ProfesorId,
-                Materie = reff.Materie,
-                Profesor = reff.Profesor,
-                StudentList = studentList
-            };*/
 
             return View(studentList);
         }
@@ -422,7 +379,6 @@ namespace CatalogOnline.Controllers
             {
                 return RedirectToAction("Privacy", "Home");
             }
-
 
             try
             {

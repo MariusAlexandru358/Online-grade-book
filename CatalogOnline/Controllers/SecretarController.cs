@@ -49,7 +49,7 @@ namespace CatalogOnline.Controllers
 
             if (currentMonth > 8)
             {
-                currentYear += 1; // If current month is after August, increment the year
+                currentYear += 1; 
             }
 
             for (int i = 0; i < 5; i++)
@@ -238,7 +238,6 @@ namespace CatalogOnline.Controllers
                 var currentMonth = DateTime.Now.Month;
                 var schoolYear = firstEntry.Student.AnInscriere + firstEntry.An - (currentMonth > 8 ? 1 : 0);
 
-                /*document.Add(new Paragraph("Catalog").SetFont(font).SetFontSize(20).SetBold().SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));*/
                 document.Add(new Paragraph($"Anul universitar {schoolYear}-{schoolYear+1}").SetFont(font).SetFontSize(12));
                 document.Add(new Paragraph($"Disciplina: {firstEntry.Materie.Nume}").SetFont(font).SetFontSize(12));
                 document.Add(new Paragraph($"Profesor: {firstEntry.Profesor.Nume}").SetFont(font).SetFontSize(12));
@@ -276,7 +275,6 @@ namespace CatalogOnline.Controllers
         }
 
 
-        // GET: Secretary/SendMessage
         public IActionResult SendMessage()
         {
             if (!CredentialsIsValid())
@@ -297,59 +295,6 @@ namespace CatalogOnline.Controllers
             return View("NotifyProf",model);
         }
 
-        /*// POST: Secretary/SendMessage
-        [HttpPost]
-        public async Task<IActionResult> SendMessage(SendMessageViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Get all professors from the selected groups
-                var professorsInGroups = new List<Profesor>();
-                if (model.CatedraList != null && model.CatedraList.Count > 0)
-                {
-                    professorsInGroups = _catalogOnlineContext.Profesor
-                                                .Where(p => model.CatedraList.Contains(p.Catedra))
-                                                .ToList();
-                }
-
-                // Combine the selected professors and professors from the selected groups
-                var selectedProfessors = _catalogOnlineContext.Profesor
-                                                 .Where(p => model.ProfesorIdList.Contains(p.Id))
-                                                 .Union(professorsInGroups)
-                                                 .ToList();
-
-                // Send messages to all selected professors
-                foreach (var professor in selectedProfessors)
-                {
-                    var message = new MesajProfesor
-                    {
-                        Message = model.Mesaj,
-                        CreatedAt = DateTime.Now,
-                        ProfesorId = professor.Id,
-                        IsRead = false,
-                        Profesor = professor
-                        //SecretarId = model.SecretarId // Assuming you have the SecretaryId available
-                    };
-
-                    _catalogOnlineContext.MesajProfesor.Add(message);
-                }
-
-                await _catalogOnlineContext.SaveChangesAsync();
-
-                TempData["SuccessMessage"] = "Mesajul a fost trimis cu succes.";
-                return RedirectToAction("SendMessage");
-            }
-
-            // Reload the groups and professors list in case of validation error
-            model.CatedraList = new List<string> { "Matematica", "Programare", "Fizica" };
-            model.ProfesorList = _catalogOnlineContext.Profesor.ToList();
-            var professors = _catalogOnlineContext.Profesor.ToList();
-            ViewBag.CatedraList = professors.Select(p => p.Catedra).ToList();
-            ViewBag.ProfesorList = professors;
-            return View(model);
-        }*/
-
-        // POST: Secretary/SendMessage
         [HttpPost]
         public async Task<IActionResult> SendMessage(SendMessageViewModel model)
         {
@@ -390,7 +335,6 @@ namespace CatalogOnline.Controllers
                         ProfesorId = professor.Id,
                         IsRead = false,
                         Profesor = professor
-                        //SecretarId = model.SecretarId // Assuming you have the SecretaryId available
                     };
 
                     _catalogOnlineContext.MesajProfesor.Add(message);

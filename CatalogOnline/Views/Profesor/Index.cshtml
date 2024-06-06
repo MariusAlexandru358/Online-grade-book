@@ -1,45 +1,15 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
     ViewData["Title"] = "ProfesorHome";
     var unreadNotificationsCount = ViewBag.UnreadNotificationsCount;
 }
-@* @model List<List<ProfesorMaterieStudent>> *@
-@* @model List<List<CatalogOnline.Logic.NoteDTO>> *@
 @model List<CatalogOnline.Logic.NoteListDTO>
 
 <div class="container">
 
-@* 
-    <div class="container my-4">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Alege anul universitar:</h5>
-            </div>
-            <div class="card-body">
-                <div class="form-group mb-3">
-                    <label for="yearDropdown" class="form-label"></label>
-                    <select class="form-select" id="yearDropdown" name="selectedYear">
-                        <option value="0" selected>Selectează anul</option>
-                        @for (int i = 1; i <= Model.Anul; i++)
-                        {
-                            <option value="@i">@i (@(Model.Student.AnInscriere + @i - 1)-@(Model.Student.AnInscriere + @i))</option>
-                        }
-                    </select>
-                </div>
-                <div class="alert alert-info mt-3">
-                    <strong>Notă:</strong> Selectați anul pentru a vedea notele.
-                </div>
-            </div>
-        </div>
-    </div>
- *@
 
 
     <div class="col-12 d-flex justify-content-end">
         <div class="notification-box">
-            @* <a href="@Url.Action("Notificare", "Student")" class="notification-link"> *@
             <a class="notification-link" asp-action="Notificare">
 
                 Notificări
@@ -52,7 +22,6 @@
     </div>
 
     <div class="card">
-        @*TODO Add credits, change column order: name - credit - an - sem - nota, modify js to match new order*@
         <div class="card-body">
             @*<h3>Note:</h3>*@
             @{
@@ -121,14 +90,8 @@
                                     <td>@grade.Student.Nume</td>
                                     <td>@grade.An</td>
                                     <td>Sem. @grade.Semestru</td>
-                                    @* @if (grade.Nota != null && grade.Nota >= 5)
-                                    {
-                                        <td>@grade.Nota</td>
-                                    }
-                                    else
-                                    { *@
+                                    
                                         <td>
-                                            @* <a asp-action="AddNota" asp-route-id=@grade.Id>Adauga</a> *@
                                                 
                                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                                     <div class="form-group">
@@ -174,11 +137,6 @@
             </form>
         </div>
     </div>
-    @* <div class="card">
-        <div class="card-body">
-            <h3 id="average"></h3>
-        </div>
-    </div> *@
 </div>
 
  
@@ -193,14 +151,14 @@
     }
 
     .notification-box {
-        background-color: #f8f9fa; /* Light background for the notification box */
+        background-color: #f8f9fa; 
         padding: 10px;
         border-radius: 5px;
     }
 
     .notification-link {
         text-decoration: none;
-        color: #007bff; /* Bootstrap primary color */
+        color: #007bff; 
         font-weight: bold;
     }
 

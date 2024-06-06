@@ -62,32 +62,6 @@ namespace CatalogOnline.Controllers
             }
             var student = _catalogOnlineContext.Student.FirstOrDefault(p => p.Email.ToLower() == loggedInStudentEmail.ToLower());
 
-            /*var note = _catalogOnlineContext.Nota.Include(g => g.ProfesorMaterieStudent).ThenInclude(s => s.Student)
-                .Include(g => g.ProfesorMaterieStudent).ThenInclude(c => c.Materie)
-                .Where(g => g.ProfesorMaterieStudent.Student.Email.ToLower() == loggedInStudentEmail.ToLower()).ToList();
-*/
-
-            /*var query = _catalogOnlineContext.Nota
-                .Include(g => g.ProfesorMaterieStudent).ThenInclude(s => s.Student)
-                .Include(g => g.ProfesorMaterieStudent).ThenInclude(c => c.Materie)
-                .Where(g => g.ProfesorMaterieStudent.Student.Email.ToLower() == loggedInStudentEmail.ToLower());
-
-            // Filter by selected year if provided
-            if (selectedYear.HasValue)
-            {
-                query = query.Where(g => g.ProfesorMaterieStudent.An == selectedYear.Value);
-            }
-
-            var note = query.ToList();
-            int maxYear = 0;
-            if (!note.IsNullOrEmpty())
-            {
-                maxYear = note.Max(g => g.ProfesorMaterieStudent.An);
-            }
-
-            var medie = calcMedie(note);            
-             */
-
 
             var query = _catalogOnlineContext.ProfesorMaterieStudent
                 .Include(g => g.Student)
@@ -105,9 +79,6 @@ namespace CatalogOnline.Controllers
                 maxYear = note.Max(g => g.An);
             }
 
-            //var medie = calcMedie(note);
-
-
             var viewModel = new 
             {
                 Student = student,
@@ -123,17 +94,6 @@ namespace CatalogOnline.Controllers
 
             return View("Index", viewModel);
         }
-
-        /*public IActionResult SortCourses(string sortBy)
-        {
-            // Retrieve sorted courses for the logged-in student based on sortBy parameter
-            var sortedCourses = // Query the database and sort courses accordingly
-
-        return View(sortedCourses);
-        }*/
-
-
-
 
         public IActionResult Notificare()
         {
@@ -208,24 +168,17 @@ namespace CatalogOnline.Controllers
                 var fontPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "fonts", "calibri.ttf");
                 var font = PdfFontFactory.CreateFont(fontPath, PdfEncodings.IDENTITY_H);
                 
-                /*document.Add(new Paragraph("Adeverință student").SetFontSize(20).SetBold());
-                document.Add(new Paragraph($"Nume: {student.Nume}"));
-                document.Add(new Paragraph($"Program de studiu: {student.ProgramStudiu}"));
-                document.Add(new Paragraph($"An de studiu: {student.AnStudiu}"));*/
-
                 document.Add(new Paragraph("Adeverință student")
                 .SetFont(font).SetFontSize(20)
                 .SetBold()
                 .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
 
-                // Add body text
                 document.Add(new Paragraph($"\t{student.Nume}, CNP: ************* este student la " +
                     $"Facultatea de Matematica și Informatică a Universității din București, " +
                     $"înscris în programul de studiu {student.ProgramStudiu} în anul {student.AnStudiu}.")
                     .SetFont(font).SetFontSize(12)
                     .SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT));
 
-                // Add space for stamp and signature
                 document.Add(new Paragraph("\n\n\n\n"));
                 document.Add(new Paragraph("Facultatea de Matematica și Informatică, Universitatea din București")
                     .SetFont(font).SetFontSize(12)
