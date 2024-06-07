@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CatalogOnline")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a3cbd756b282234ab95b6addb2dc0f909a0c539")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b845f4189cd4c3318cb093a3873544610a0b7576")]
 [assembly: System.Reflection.AssemblyProductAttribute("CatalogOnline")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CatalogOnline")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

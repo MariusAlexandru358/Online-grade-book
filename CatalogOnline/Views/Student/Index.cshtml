@@ -177,11 +177,11 @@
                     var keyB = $(b).find('td:eq(' + sortBy + ')').text();
                     var semA = $(a).find('td:eq(3)').text();
                     var semB = $(b).find('td:eq(3)').text();
-                    if (sortBy === 4) { // Nota finala
+                    if (sortBy == 4) { // Nota finala
                         keyA = parseFloat(keyA);
                         keyB = parseFloat(keyB);
                     }
-                    if (order === 'asc') {
+                    if (order == 'asc') {
                         return (semA < semB) ? -1 : (semA > semB) ? 1 :
                             (keyA < keyB) ? -1 : (keyA > keyB) ? 1 : 0;
                     } else {
