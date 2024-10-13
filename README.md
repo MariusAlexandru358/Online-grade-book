@@ -2,7 +2,7 @@
 
 ## General Description
 
-This project is a comprehensive web application designed to manage academic records and activities in a university setting. The system supports multiple user roles, each with distinct functionalities, ensuring efficient management and access to academic data.
+This project is a comprehensive web application designed to manage academic records and activities in an university setting. The system supports multiple user roles, each with distinct functionalities, ensuring efficient management and access to academic data.
 
 ## Requirements and Features
 
