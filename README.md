@@ -1,4 +1,4 @@
-# Online Greadebook System
+# Online Gradebook System
 
 ## General Description
 
